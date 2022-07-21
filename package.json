@@ -1,0 +1,245 @@
+{
+	"name": "structurizr-dsl-abacus-extension",
+	"displayName": "Structurizr DSL Abacus Extension",
+	"description": "Extends DSL support to the auto creation of Structurizr files as well as syntax highlighting and code completion using content in an Abacus Enterprise Architecture Repository. Can generate image files from locally installed Structurizr Lite server.",
+	"publisher": "Elsevier",
+	"version": "0.5.1",
+	"icon": "resources/logo.png",
+	"engines": {
+		"vscode": "^1.63.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"keywords": [
+		"Structurizr",
+		"Abacus",
+		"C4",
+		"C4 Model",
+		"C4 PlantUML"
+	],
+	"activationEvents": [
+		"onLanguage:structurizr",
+		"onAuthenticationRequest:abacus",
+		"onView:abacusComponents"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/elsevierlabs-os/structurizr-dsl-abacus-extension"
+	},
+	"main": "./client/out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "abacus.createDSL",
+				"title": "Create Structurizr DSL",
+				"icon": {
+					"light": "resources/light/dsl.svg",
+					"dark": "resources/dark/dsl.svg"
+				}
+			},
+			{
+				"command": "abacus.createPlantUML",
+				"title": "Create PlantUML Diagram",
+				"icon": {
+					"light": "resources/light/plantuml.svg",
+					"dark": "resources/dark/plantuml.svg"
+				}
+			},
+			{
+				"command": "abacus.createC4PlantUML",
+				"title": "Create C4 PlantUML Diagram",
+				"icon": {
+					"light": "resources/light/plantuml.svg",
+					"dark": "resources/dark/plantuml.svg"
+				}
+			},
+			{
+				"command": "abacus.login",
+				"title": "Login with Abacus Credentials"
+			},
+			{
+				"command": "structurizr.publish",
+				"title": "Publish DSL to Structurizr Lite",
+				"icon": {
+					"light": "resources/light/export.svg",
+					"dark": "resources/dark/export.svg"
+				}
+			},
+			{
+				"command": "structurizr.diagrams",
+				"title": "Create Structurizr Images",
+				"icon": {
+					"light": "resources/light/file-media.svg",
+					"dark": "resources/dark/file-media.svg"
+				}
+			}
+		],
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "abacus.createDSL",
+					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
+				},
+				{
+					"command": "abacus.createPlantUML",
+					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
+				},
+				{
+					"command": "abacus.createC4PlantUML",
+					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
+				}
+			],
+			"editor/title": [
+				{
+					"when": "editorLangId == structurizr",
+					"command": "structurizr.publish",
+					"group": "navigation"
+				},
+				{
+					"when": "editorLangId == structurizr",
+					"command": "structurizr.diagrams",
+					"group": "navigation"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "abacus-explorer",
+					"title": "Abacus Explorer",
+					"icon": "resources/abacus_logo_bubbles.png"
+				}
+			]
+		},
+		"views": {
+			"abacus-explorer": [
+				{
+					"id": "abacusComponents",
+					"name": "Components",
+					"icon": "resources/abacus_logo_bubbles.png"
+				}
+			]
+		},
+		"languages": [
+			{
+				"id": "structurizr",
+				"aliases": [
+					"Structurizr",
+					"structurizr"
+				],
+				"extensions": [
+					"dsl"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "structurizr",
+				"scopeName": "source.structurizr",
+				"path": "./syntaxes/structurizr.tmLanguage.json"
+			}
+		],
+		"configuration": {
+			"title": "Structurizr DSL Abacus",
+			"properties": {
+				"abacus.host": {
+					"type": "string",
+					"default": "company.avolutionsoftware.com",
+					"description": "Abacus Server Hostname",
+					"order": 1
+				},
+				"abacus.port": {
+					"type": "number",
+					"default": 443,
+					"description": "Abacus Server default port",
+					"order": 2
+				},
+				"abacus.secure": {
+					"type": "boolean",
+					"default": true,
+					"description": "Verify SSL/TLS connection (recommended)",
+					"order": 3
+				},
+				"abacus.api": {
+					"type": "string",
+					"default": "/api",
+					"description": "Base URI for the Abacus REST API end point",
+					"order": 4
+				},
+				"abacus.eeid": {
+					"type": "number",
+					"default": 1001,
+					"description": "EEID of the architecture to be queried for applications",
+					"order": 5
+				},
+				"abacus.c4Person": {
+					"type": "string",
+					"default": "Person",
+					"description": "Component Type that represents C4 Person in Abacus",
+					"order": 6
+				},
+				"abacus.c4SoftwareSystem": {
+					"type": "string",
+					"default": "Software System",
+					"description": "Component Type that represents C4 Software Systems in Abacus",
+					"order": 7
+				},
+				"abacus.c4Container": {
+					"type": "string",
+					"default": "Container",
+					"description": "Component Type that represents C4 Containers in Abacus",
+					"order": 8
+				},
+				"abacus.c4Component": {
+					"type": "string",
+					"default": "Component",
+					"description": "Component Type that represents C4 Components in Abacus",
+					"order": 9
+				},
+				"structurizrLite.workspaceLocation": {
+					"type": "string",
+					"default": "",
+					"description": "Local folder location for workspace",
+					"order": 10
+				},
+				"structurizrLite.server": {
+					"type": "string",
+					"default": "",
+					"description": "Installed location of Structurizr Lite server (eg. http://localhost:8080)",
+					"order": 11
+				},
+				"structurizrLanguageServer.maxNumberOfProblems": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"description": "Controls the maximum number of problems produced by the server.",
+					"order": 12
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.4",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.63.0",
+		"@typescript-eslint/eslint-plugin": "^5.1.0",
+		"@typescript-eslint/parser": "^5.1.0",
+		"@vscode/test-electron": "^1.6.2",
+		"esbuild": "^0.14.9",
+		"eslint": "^8.1.0",
+		"glob": "^7.1.7",
+		"mocha": "^9.1.3",
+		"typescript": "^4.4.4"
+	}
+}
