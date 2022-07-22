@@ -5,6 +5,7 @@ An extension that provides these key features:
 * Syntax highlighting support for [Structurizr DSL](https://github.com/structurizr/dsl)
 * Allow content in Avolution Abacus to be used to create Structurizr files
 * Auto complete relevant data sections when writing up Structurizr C4 Model DSL files.
+* Integration with Structurizr Lite to generate image files from DSL files.
 
 ## Features
 
