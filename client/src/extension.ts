@@ -9,6 +9,7 @@ import { StructurizrSoftwareSystemCompletionProvider } from './provider/completi
 import { AbacusComponentProvider, AbacusNode } from './provider/tree-data-provider/AbacusComponentProvider';
 import { StructurizrClient } from './StructurizrClient';
 import path = require('path');
+import { DrawioPanel } from './DrawioPanel';
 
 let client: LanguageClient;
 
@@ -103,7 +104,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('drawio.sidePreview', async () => {
-			await StructurizrClient.showDrawioPreview(context);
+			await DrawioPanel.createOrShow(context);
 		})
 	);
 
