@@ -101,6 +101,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+	context.subscriptions.push(
+		vscode.commands.registerCommand('drawio.sidePreview', async () => {
+			await StructurizrClient.showDrawioPreview(context);
+		})
+	);
+
 	showWelcomeMessage(context);
 
 	establishAbacusCache(context);
@@ -117,7 +123,7 @@ export function deactivate() {
 
 function showWelcomeMessage(context: vscode.ExtensionContext) {
 	let previousVersion = context.globalState.get<string>('structurizr-dsl-abacus-extension-version');
-	let currentVersion = vscode.extensions.getExtension('gfrsoftware.structurizr-dsl-abacus-extension')?.packageJSON?.version;
+	let currentVersion = vscode.extensions.getExtension('Elsevier.structurizr-dsl-abacus-extension')?.packageJSON?.version;
 	let message : string | null = null;
 	let previousVersionArray = previousVersion ? previousVersion.split('.').map((s: string) => Number(s)) : [0, 0, 0];
 	let currentVersionArray = currentVersion.split('.').map((s: string) => Number(s));
@@ -135,11 +141,11 @@ function showWelcomeMessage(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage(message, '⭐️ Rate', '⭐️ Star on Github', '🪲 Report Bug')
 			.then(function (val: string | undefined) {
 				if (val === '⭐️ Rate') {
-					vscode.env.openExternal(vscode.Uri.parse('https://marketplace.visualstudio.com/items?itemName=gfrsoftware.structurizr-dsl-abacus-extension'));
+					vscode.env.openExternal(vscode.Uri.parse('https://marketplace.visualstudio.com/items?itemName=Elsevier.structurizr-dsl-abacus-extension'));
 				} else if (val === '🪲 Report Bug') {
-					vscode.env.openExternal(vscode.Uri.parse('https://github.com/gfrsoftware/structurizr-dsl-abacus-extension/issues'));
+					vscode.env.openExternal(vscode.Uri.parse('https://github.com/elsevierlabs-os/structurizr-dsl-abacus-extension/issues'));
 				} else if (val === '⭐️ Star on Github') {
-					vscode.env.openExternal(vscode.Uri.parse('https://github.com/gfrsoftware/structurizr-dsl-abacus-extension'));
+					vscode.env.openExternal(vscode.Uri.parse('https://github.com/elsevierlabs-os/structurizr-dsl-abacus-extension'));
 				}
 			});
 		context.globalState.update('structurizr-dsl-abacus-extension-version', currentVersion);

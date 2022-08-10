@@ -73,6 +73,14 @@
 					"light": "resources/light/file-media.svg",
 					"dark": "resources/dark/file-media.svg"
 				}
+			},
+			{
+				"command": "drawio.sidePreview",
+				"title": "Preview in Draw.io",
+				"icon": {
+					"light": "resources/light/drawio.svg",
+					"dark": "resources/dark/drawio.svg"
+				}
 			}
 		],
 		"menus": {
@@ -93,13 +101,18 @@
 			"editor/title": [
 				{
 					"when": "editorLangId == structurizr",
+					"command": "drawio.sidePreview",
+					"group": "navigation@1"
+				},
+				{
+					"when": "editorLangId == structurizr",
 					"command": "structurizr.publish",
-					"group": "navigation"
+					"group": "navigation@2"
 				},
 				{
 					"when": "editorLangId == structurizr",
 					"command": "structurizr.diagrams",
-					"group": "navigation"
+					"group": "navigation@3"
 				}
 			]
 		},

@@ -75,4 +75,7 @@ export class StructurizrClient {
         }
     }
 
+    static async showDrawioPreview(context: vscode.ExtensionContext) {
+        
+    }
 }
