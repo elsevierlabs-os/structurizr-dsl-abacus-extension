@@ -1,8 +1,10 @@
 import * as vscode from 'vscode';
 
+const path = require('path');
+
 export class DrawioPanel {
     /**
-	 * Track the currently panel. Only allow a single panel to exist at a time.
+	 * Track the currentl panel. Only allow a single panel to exist at a time.
 	 */
 	public static currentPanel: DrawioPanel | undefined;
 	public static readonly viewType = 'drawioPreview';
@@ -17,10 +19,11 @@ export class DrawioPanel {
 			return;
 		}
 
+		let title = path.basename(vscode.window.activeTextEditor.document.uri.fsPath) + ' [Preview]';
 		// Otherwise, create a new panel.
 		const panel = vscode.window.createWebviewPanel(
 			DrawioPanel.viewType, 
-			'[Preview]', 
+			title, 
 			vscode.ViewColumn.Two, 
 			{ enableScripts: true, retainContextWhenHidden: true }
 		);
@@ -38,11 +41,12 @@ export class DrawioPanel {
 		// This happens when the user closes the panel or when the panel is closed programmatically
 		this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
-		// Update the content based on view changes
+		// Update the content based on view changes - this may be a bad idea so will comment out for now
 		this._panel.onDidChangeViewState(
 			e => {
 				if (this._panel.visible) {
-					this._panel.webview.html = this.getOnlineHtml();
+					// this._panel.webview.html = this.getOnlineHtml();
+					console.log("DrawioPanel received a view state changed notification.");
 				}
 			},
 			null,
@@ -52,6 +56,7 @@ export class DrawioPanel {
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(
 			message => {
+				console.log("DrawioPanel received a message: " + message); // {"event" : "init"} first message sent from draw.io
 				switch (message.command) {
 					case 'alert':
 						vscode.window.showErrorMessage(message.text);
@@ -80,10 +85,10 @@ export class DrawioPanel {
 					window.addEventListener('message', event => {
 						
 						if (event.source === window.frames[0]) {
-							//console.log("frame -> vscode", event.data);
+							console.log("frame -> vscode", event.data);
 							api.postMessage(event.data);
 						} else {
-							//console.log("vscode -> frame", event.data);
+							console.log("vscode -> frame", event.data);
 							window.frames[0].postMessage(event.data, "*");
 						}
 					});
