@@ -108,7 +108,7 @@
 				{
 					"id": "abacus-explorer",
 					"title": "Abacus Explorer",
-					"icon": "resources/abacus_logo_bubbles.png"
+					"icon": "resources/abacus_icon.png"
 				}
 			]
 		},
@@ -117,7 +117,7 @@
 				{
 					"id": "abacusComponents",
 					"name": "Components",
-					"icon": "resources/abacus_logo_bubbles.png"
+					"icon": "resources/abacus_icon.png"
 				}
 			]
 		},
