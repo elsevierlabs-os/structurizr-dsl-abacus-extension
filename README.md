@@ -23,7 +23,7 @@ Where desired, C4 and normal PlantUML diagrams can be exports from Structurizr m
 
 ## Extension System Context Diagram
 
-![System Context](https://raw.githubusercontent.com/gfrsoftware/images/main/structurizr/structurizr-71878-SystemContext.png)
+![System Context](https://raw.githubusercontent.com/elsevierlabs-os/structurizr-dsl-abacus-extension/main/media/structurizr-71878-SystemContext.png)
 
 ## Requirements
 
