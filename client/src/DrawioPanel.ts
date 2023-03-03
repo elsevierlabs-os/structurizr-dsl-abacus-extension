@@ -68,6 +68,7 @@ export class DrawioPanel {
 						console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
 						vscode.window.showErrorMessage(JSON.stringify(msg.event));
 						return;
+						// See https://github.com/jgraph/drawio-integration/blob/master/inline.js on posting a message to draw.io. Need to adjust to match vscode webview expectations
 				}
 			},
 			null,
