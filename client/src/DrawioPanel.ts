@@ -57,9 +57,16 @@ export class DrawioPanel {
 		this._panel.webview.onDidReceiveMessage(
 			message => {
 				console.log("DrawioPanel received a message: " + message); // {"event" : "init"} first message sent from draw.io
-				switch (message.command) {
+				const msg = JSON.parse(message);
+				switch (msg.command) {
 					case 'alert':
 						vscode.window.showErrorMessage(message.text);
+						return;
+				}
+				switch (msg.event) {
+					case 'init':
+						console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
+						vscode.window.showErrorMessage(JSON.stringify(msg.event));
 						return;
 				}
 			},
