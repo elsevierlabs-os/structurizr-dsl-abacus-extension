@@ -137,20 +137,20 @@ export class AbacusNode extends vscode.TreeItem {
         switch(c4level){
             case 'c4SoftwareSystem':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'softwaresystem.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'softwaresystem.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'softwaresystem.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'softwaresystem.svg')
                 };
                 break;
             case 'c4Container':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'container.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'container.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'container.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'container.svg')
                 };
                 break;
             case 'c4Component':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'component.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'component.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'component.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'component.svg')
                 };
                 break;
         }
