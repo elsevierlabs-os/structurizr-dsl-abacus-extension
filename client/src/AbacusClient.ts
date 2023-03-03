@@ -270,6 +270,7 @@ export class AbacusClient {
         try {
             let client = this.getInstance();
             let targeturl = getUrl(queryString, AbacusClient._baseurl);
+            console.log('getSystemsDataset making call to ' + targeturl);
             let headers: IHeaders = {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 'Accept': 'application/json',
