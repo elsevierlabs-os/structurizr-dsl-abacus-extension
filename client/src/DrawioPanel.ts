@@ -15,7 +15,7 @@ export class DrawioPanel {
 		
 		// If we already have a panel, show it.
 		if (DrawioPanel.currentPanel) {
-			DrawioPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
+			DrawioPanel.currentPanel._panel.reveal(vscode.ViewColumn.Two);
 			return;
 		}
 
@@ -24,7 +24,7 @@ export class DrawioPanel {
 		const panel = vscode.window.createWebviewPanel(
 			DrawioPanel.viewType, 
 			title, 
-			vscode.ViewColumn.One, 
+			vscode.ViewColumn.Two, 
 			{ enableScripts: true, retainContextWhenHidden: true }
 		);
 
@@ -44,9 +44,12 @@ export class DrawioPanel {
 		// Update the content based on view changes - this may be a bad idea so will comment out for now
 		this._panel.onDidChangeViewState(
 			e => {
+				console.log(`DrawioPanel received a view state changed notification: ${e.webviewPanel.title}`);
 				if (this._panel.visible) {
 					// this._panel.webview.html = this.getOnlineHtml();
-					console.log("DrawioPanel received a view state changed notification.");
+					console.log("Panel visible");
+				} else {
+					console.log("Panel hidden");
 				}
 			},
 			null,
@@ -54,6 +57,8 @@ export class DrawioPanel {
 		);
 
 		// Handle messages from the webview
+		// In the future it would be fantastic if we can borrow the code link feature of the draw.io plugin so that selecting items in the drawing selects
+		// the structurizr element https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio
 		this._panel.webview.onDidReceiveMessage(
 			async message => {
 				console.log("DrawioPanel received a message: " + message); // {"event" : "init"} first message sent from draw.io
