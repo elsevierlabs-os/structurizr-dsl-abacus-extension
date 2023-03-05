@@ -15,7 +15,7 @@ export class DrawioPanel {
 		
 		// If we already have a panel, show it.
 		if (DrawioPanel.currentPanel) {
-			DrawioPanel.currentPanel._panel.reveal(vscode.ViewColumn.Two);
+			DrawioPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
 			return;
 		}
 
@@ -24,7 +24,7 @@ export class DrawioPanel {
 		const panel = vscode.window.createWebviewPanel(
 			DrawioPanel.viewType, 
 			title, 
-			vscode.ViewColumn.Two, 
+			vscode.ViewColumn.One, 
 			{ enableScripts: true, retainContextWhenHidden: true }
 		);
 
@@ -55,7 +55,7 @@ export class DrawioPanel {
 
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(
-			message => {
+			async message => {
 				console.log("DrawioPanel received a message: " + message); // {"event" : "init"} first message sent from draw.io
 				const msg = JSON.parse(message);
 				switch (msg.command) {
@@ -66,8 +66,8 @@ export class DrawioPanel {
 				switch (msg.event) {
 					case 'init':
 						console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
-						vscode.window.showErrorMessage(JSON.stringify(msg.event));
-						this._panel.webview.postMessage({ action : 'load', xml: this.getSampleXml() });
+						// vscode.window.showErrorMessage(JSON.stringify(msg.event));
+						var res = await this._panel.webview.postMessage(JSON.stringify({ action : 'load', xml: this.getSampleXml() }));
 						return;
 						// See https://github.com/jgraph/drawio-integration/blob/master/inline.js on posting a message to draw.io. Need to adjust to match vscode webview expectations
 				}
