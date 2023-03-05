@@ -4,7 +4,7 @@ const path = require('path');
 
 export class DrawioPanel {
     /**
-	 * Track the currentl panel. Only allow a single panel to exist at a time.
+	 * Track the current panel. Only allow a single panel to exist at a time.
 	 */
 	public static currentPanel: DrawioPanel | undefined;
 	public static readonly viewType = 'drawioPreview';
@@ -67,6 +67,7 @@ export class DrawioPanel {
 					case 'init':
 						console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
 						vscode.window.showErrorMessage(JSON.stringify(msg.event));
+						this._panel.webview.postMessage({ action : 'load', xml: this.getSampleXml() });
 						return;
 						// See https://github.com/jgraph/drawio-integration/blob/master/inline.js on posting a message to draw.io. Need to adjust to match vscode webview expectations
 				}
@@ -105,6 +106,23 @@ export class DrawioPanel {
 			</body>
 		</html>
         `;
+	}
+
+	getSampleXml() : string {
+		return `<?xml version="1.0" encoding="UTF-8"?>
+		<mxfile host="app.diagrams.net" modified="2023-03-03T20:02:25.591Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.0.0" etag="-hW2f_RAXeajE4h-zvvO" version="21.0.2">
+		  <diagram name="Page-1" id="TGXveLmL1LbJEgDd1sux">
+			<mxGraphModel dx="1387" dy="804" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+			  <root>
+				<mxCell id="0" />
+				<mxCell id="1" parent="0" />
+				<mxCell id="2AyjuID5S5YfO748b1Fw-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+				  <mxGeometry x="354" y="555" width="120" height="60" as="geometry" />
+				</mxCell>
+			  </root>
+			</mxGraphModel>
+		  </diagram>
+		</mxfile>`;
 	}
 
 	public dispose() {
