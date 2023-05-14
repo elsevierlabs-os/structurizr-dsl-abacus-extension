@@ -104,7 +104,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('drawio.sidePreview', async () => {
-			await DrawioPanel.createOrShow(context);
+			DrawioPanel.createOrShow(context);
 		})
 	);
 

@@ -2,7 +2,7 @@ import path = require('path');
 import { PlantUMLWriter } from 'structurizr-typescript';
 import * as vscode from 'vscode';
 import { AbacusClient } from '../../AbacusClient';
-import { FsConsumer } from '../../fsConsumer';
+import { FsConsumer } from '../../FsConsumer';
 import { StructurizrDslFormatter } from '../../formatters/StructurizrDslFormatter';
 import { WorkspaceFactory } from '../../WorkspaceFactory';
 import { C4PlantUMLFormatter } from '../../formatters/C4PlantUMLFormatter';
