@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
 const path = require('path');
+const replaceExt = require('replace-ext');
 
 export class DrawioPanel {
     /**
@@ -10,6 +11,8 @@ export class DrawioPanel {
 	public static readonly viewType = 'drawioPreview';
 	private readonly _panel: vscode.WebviewPanel;
 	private _disposables: vscode.Disposable[] = [];
+	private source;
+	private target;
 
 	public static createOrShow(context: vscode.ExtensionContext) {
 		
@@ -19,7 +22,11 @@ export class DrawioPanel {
 			return;
 		}
 
-		let title = path.basename(vscode.window.activeTextEditor.document.uri.fsPath) + ' [Preview]';
+		let _source = vscode.window.activeTextEditor.document.uri.fsPath;
+		let _target = replaceExt(_source, '.drawio');
+		let title = path.basename(_source)  + ' [Preview]';
+		console.log('DSL file to render: ', _source);
+		console.log('DrawIO file to update: ', _target);
 		// Otherwise, create a new panel.
 		const panel = vscode.window.createWebviewPanel(
 			DrawioPanel.viewType, 
@@ -28,18 +35,25 @@ export class DrawioPanel {
 			{ enableScripts: true, retainContextWhenHidden: true }
 		);
 
-		DrawioPanel.currentPanel = new DrawioPanel(panel);
+		DrawioPanel.currentPanel = new DrawioPanel(panel, _source , _target);
 	}
 
-	private constructor(panel: vscode.WebviewPanel) {
+	private constructor(panel: vscode.WebviewPanel, source: string, target: string) {
 		this._panel = panel;
 
+		// Set source and target files
+		this.source = source;
+		this.target = target;
 		// Set the webview's initial html content
 		this._panel.webview.html = this.getOnlineHtml();
 
 		// Listen for when the panel is disposed
 		// This happens when the user closes the panel or when the panel is closed programmatically
-		this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+		this._panel.onDidDispose(() => {
+			console.log('DrawioPanel being disposed of.');
+			this.dispose(), null, this._disposables;
+		}
+		);
 
 		// Update the content based on view changes - this may be a bad idea so will comment out for now
 		this._panel.onDidChangeViewState(
@@ -72,6 +86,8 @@ export class DrawioPanel {
 					case 'init':
 						console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
 						// vscode.window.showErrorMessage(JSON.stringify(msg.event));
+						// We want to load the editor with the relevant Drawio XML payload
+						var xmlFile = this.target;
 						var res = await this._panel.webview.postMessage(JSON.stringify({ action : 'load', xml: this.getSampleXml() }));
 						return;
 						// See https://github.com/jgraph/drawio-integration/blob/master/inline.js on posting a message to draw.io. Need to adjust to match vscode webview expectations
