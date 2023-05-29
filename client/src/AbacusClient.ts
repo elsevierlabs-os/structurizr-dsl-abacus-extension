@@ -21,6 +21,7 @@ export class AbacusClient {
     private static _options: IRequestOptions;
     private static _baseurl: string;
     private static _eeid: number;
+    private static _busy: boolean;
 
     private constructor() {
         // Singleton pattern, block from public construction
@@ -35,6 +36,7 @@ export class AbacusClient {
         AbacusClient._options.ignoreSslError = !enforceSSL;
         AbacusClient._instance = new HttpClient(useragent, undefined, AbacusClient._options);
         AbacusClient._eeid = vscode.workspace.getConfiguration('abacus').get<number>('eeid', 0);
+        AbacusClient._busy = false;
     }
 
     public static getInstance(): HttpClient {
@@ -48,6 +50,12 @@ export class AbacusClient {
         if (AbacusClient._instance === undefined) {
             new AbacusClient();
         }
+        if (AbacusClient._busy)
+        {
+            console.log('Cache being told to init but is already busy. Ignoring');
+            return;
+        }
+        AbacusClient._busy = true;
         // Ensure we have a cache object
         AbacusClient._cache = Cache.getInstance(context);
         // TEMPORARY - Clear cache
@@ -71,7 +79,7 @@ export class AbacusClient {
                 }
                 console.log(`Building cache of ${componentTypeName} Abacus components`);
                 do {
-                    console.log(`Loading page ${page} of Abacus components.`);
+                    console.log(`Loading page ${page} of Abacus ${componentTypeName} components.`);
                     let data = await AbacusClient.getSystemsDataset(componentTypeName, "", page);
                     if (data) {
                         let increment: number = 100 / data['@odata.count'];
@@ -80,7 +88,7 @@ export class AbacusClient {
                         }
                         await AbacusClient._cache.save();
                         let fraction: number = data.value.length * increment;
-                        progress.report({message: `Loaded page: ${page}`, increment: fraction});
+                        progress.report({message: `Loaded ${componentTypeName} page: ${page}`, increment: fraction});
                         if (data.value.length < 20) {
                             loading = false;
                         }
@@ -94,6 +102,7 @@ export class AbacusClient {
                 } while (loading && !token.isCancellationRequested);
             }
         });
+        AbacusClient._busy = false;
     }
 
 

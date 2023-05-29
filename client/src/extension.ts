@@ -161,6 +161,7 @@ function establishAbacusCache(context: vscode.ExtensionContext){
 	// Make sure the AbacusClient has a working cache.
 	// This should be part of AbacusClient constructor but it has no 
 	// access to the context... 
+	console.log('Establish Abacus Cache being called.');
 	AbacusClient.initCache(context);
 }
 
