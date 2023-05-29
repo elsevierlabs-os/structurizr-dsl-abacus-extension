@@ -6,6 +6,7 @@ import { FsConsumer } from '../../FsConsumer';
 import { StructurizrDslFormatter } from '../../formatters/StructurizrDslFormatter';
 import { WorkspaceFactory } from '../../WorkspaceFactory';
 import { C4PlantUMLFormatter } from '../../formatters/C4PlantUMLFormatter';
+import { DrawIOFormatter } from '../../formatters/DrawIOFormatter';
 
 export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNode> {
 
@@ -117,6 +118,31 @@ export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNo
         if (c4plantUML.deployment.length > 0)
         {
             await fsclient.createFile(node.label + "-Deployment.puml", c4plantUML.deployment);
+        }
+    }
+
+    async createDrawIO(node: AbacusNode) {
+        console.log(`createDrawIO called with the following node:`);
+        console.log(node);
+        let workspacefactory = new WorkspaceFactory();
+        let workspace = await workspacefactory.buildWorkspace(node.eeid);
+        const drawIO = new DrawIOFormatter().formatWorkspace(workspace);
+        let fsclient = new FsConsumer();
+        if (drawIO.context.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Context.drawio", drawIO.context);
+        }
+        if (drawIO.container.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Container.drawio", drawIO.container);
+        }
+        if (drawIO.component.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Component.drawio", drawIO.component);
+        }
+        if (drawIO.deployment.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Deployment.drawio", drawIO.deployment);
         }
     }
 }

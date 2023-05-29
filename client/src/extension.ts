@@ -77,6 +77,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
+		vscode.commands.registerCommand('abacus.createDrawIO', (node: AbacusNode) => treeDataProvider.createDrawIO(node))
+	);
+
+	context.subscriptions.push(
 		vscode.commands.registerCommand('abacus.createPlantUML', (node: AbacusNode) => treeDataProvider.createPlantUML(node))
 	);
 

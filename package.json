@@ -39,6 +39,14 @@
 				}
 			},
 			{
+				"command": "abacus.createDrawIO",
+				"title": "Create DrawIO Diagrams",
+				"icon": {
+					"light": "resources/light/drawio.svg",
+					"dark": "resources/dark/drawio.svg"
+				}
+			},
+			{
 				"command": "abacus.createPlantUML",
 				"title": "Create PlantUML Diagram",
 				"icon": {
@@ -87,6 +95,10 @@
 			"view/item/context": [
 				{
 					"command": "abacus.createDSL",
+					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
+				},
+				{
+					"command": "abacus.createDrawIO",
 					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
 				},
 				{
