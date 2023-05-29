@@ -1,6 +1,10 @@
 import { Component, ComponentView, Container, ContainerView, DeploymentView, Element, Person, Relationship, RelationshipView, SoftwareSystem, StaticStructureElement, StaticView, SystemContextView, View, Workspace } from "structurizr-typescript";
 import { C4Views } from "./C4Views";
 import { StringWriter } from "./StringWriter";
+import { MxBuilder } from "mxbuilder";
+
+
+// This class takes a Structurizr workspace and converts it into a set of DrawIO files corresponding to the view defined in the workspace
 
 export class DrawIOFormatter {
     public formatWorkspace(workspace: Workspace) : C4Views {
@@ -32,16 +36,63 @@ export class DrawIOFormatter {
         
         return response;
     }
-    writeDeploymentView(v: DeploymentView, deploymentResult: StringWriter) {
-        throw new Error("Method not implemented.");
+
+    async writeSystemContextView(v: SystemContextView, contextResult: StringWriter) {
+        var mx = new MxBuilder();
+        v.elements
+        .map(e => e.element)
+        .sort(this.by(e => e.name))
+        .forEach(e => this.writeElement(e, mx));
+        this.writeRelationships(v.relationships, mx);
+        contextResult.write(await mx.toDiagram());
     }
-    writeComponentView(v: ComponentView, componentResult: StringWriter) {
-        throw new Error("Method not implemented.");
-    }
+
     writeContainerView(v: ContainerView, containerResult: StringWriter) {
         throw new Error("Method not implemented.");
     }
-    writeSystemContextView(v: SystemContextView, contextResult: StringWriter) {
+
+    writeComponentView(v: ComponentView, componentResult: StringWriter) {
         throw new Error("Method not implemented.");
+    }
+
+    writeDeploymentView(v: DeploymentView, deploymentResult: StringWriter) {
+        throw new Error("Method not implemented.");
+    }
+
+    writeElement(e: Element, mx: MxBuilder): void {
+        switch(e.type){
+            case Person.type:
+                mx.placePerson(e.name, e.description, e.id);
+                break;
+            case SoftwareSystem.type:
+                mx.placeSoftwareSystem(e.name, e.description, e.id);
+                break;
+            case Container.type:
+                mx.placeContainer(e.name, 'Tech goes here', e.description, e.id);
+                break;
+            case Component.type:
+                mx.placeComponent(e.name, 'Tech goes here', e.description, e.id);
+                break;
+            default:
+                break;
+        }
+    }
+
+    writeRelationships(relationships: RelationshipView[], mx: MxBuilder) {
+        relationships.map(r => r.relationship)
+        .sort(this.by(r => r.source.name + r.destination.name))
+        .forEach(r => this.writeRelationship(r, mx));
+    }
+
+    writeRelationship(r: Relationship, mx: MxBuilder): void {
+        mx.placeRelationship(r.description, r.technology, r.source.id, r.destination.id);
+    }
+
+    private by<TItem, TProperty>(value: (i: TItem) => TProperty): (a: TItem, b: TItem) => number {
+        return (a, b) => {
+            var va = value(a);
+            var vb = value(b);
+            return va > vb ? 1 : va < vb ? -1 : 0;
+        };
     }
 }
