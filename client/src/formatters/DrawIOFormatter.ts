@@ -9,36 +9,33 @@ import { MxBuilder } from "mxbuilder";
 export class DrawIOFormatter {
     public formatWorkspace(workspace: Workspace) : C4Views {
         let response = new C4Views();
-        let contextResult = new StringWriter();
-        let containerResult = new StringWriter();
-        let componentResult = new StringWriter();
-        let deploymentResult = new StringWriter();
 
         if (workspace) {
-            workspace.views.systemContextViews.forEach(v => {
-                this.writeSystemContextView(v, contextResult);
-            });
-            workspace.views.containerViews.forEach(v => {
-                this.writeContainerView(v, containerResult);
-            });
-            workspace.views.componentViews.forEach(v => {
-                this.writeComponentView(v, componentResult);
-            });
-            workspace.views.deploymentViews.forEach(v => {
-                this.writeDeploymentView(v, deploymentResult);
-            });
+            response = this.parseWorkspace(workspace);
         }
-
-        response.context = contextResult.toString();
-        response.container = containerResult.toString();
-        response.component = componentResult.toString();
-        response.deployment = deploymentResult.toString();
         
         return response;
     }
 
-    async writeSystemContextView(v: SystemContextView, contextResult: StringWriter) {
-        console.log('*** DRAWIO System Context Builder ***');
+    private parseWorkspace(workspace: Workspace) {
+        const results = new C4Views();
+        workspace.views.systemContextViews.forEach(v => {
+            results.context = this.writeSystemContextView(v);
+        });
+        workspace.views.containerViews.forEach(v => {
+            results.container = this.writeContainerView(v);
+        });
+        workspace.views.componentViews.forEach(v => {
+            results.component = this.writeComponentView(v);
+        });
+        workspace.views.deploymentViews.forEach(v => {
+            results.deployment = this.writeDeploymentView(v);
+        });
+        return results;
+    }
+
+     writeSystemContextView(v: SystemContextView) {
+        console.log('*** DRAWIO System Context View Builder ***');
         var mx = new MxBuilder();
         this.writeElement(v.softwareSystem, mx);
 
@@ -48,19 +45,26 @@ export class DrawIOFormatter {
         .forEach(e => this.writeElement(e, mx));
 
         this.writeRelationships(v.relationships, mx);
-        contextResult.write(await mx.toDiagram());
+        // const dwg = await mx.toDiagram();
+        const dwg = 'ggg';
+        console.log('*** Context View is: ');
+        console.log(dwg);
+        return dwg;
     }
 
-    writeContainerView(v: ContainerView, containerResult: StringWriter) {
-        throw new Error("Method not implemented.");
+    writeContainerView(v: ContainerView) {
+        console.log('*** DRAWIO System Container View Builder ***');
+        return '';
     }
 
-    writeComponentView(v: ComponentView, componentResult: StringWriter) {
-        throw new Error("Method not implemented.");
+    writeComponentView(v: ComponentView) {
+        console.log('*** DRAWIO Component View Builder ***');
+        return '';
     }
 
-    writeDeploymentView(v: DeploymentView, deploymentResult: StringWriter) {
-        throw new Error("Method not implemented.");
+    writeDeploymentView(v: DeploymentView) {
+        console.log('*** DRAWIO Deployment View Builder ***');
+        return '';
     }
 
     writeElement(e: Element, mx: MxBuilder): void {
