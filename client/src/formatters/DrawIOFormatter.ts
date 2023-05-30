@@ -38,11 +38,15 @@ export class DrawIOFormatter {
     }
 
     async writeSystemContextView(v: SystemContextView, contextResult: StringWriter) {
+        console.log('*** DRAWIO System Context Builder ***');
         var mx = new MxBuilder();
+        this.writeElement(v.softwareSystem, mx);
+
         v.elements
         .map(e => e.element)
         .sort(this.by(e => e.name))
         .forEach(e => this.writeElement(e, mx));
+
         this.writeRelationships(v.relationships, mx);
         contextResult.write(await mx.toDiagram());
     }

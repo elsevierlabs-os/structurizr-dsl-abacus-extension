@@ -7,7 +7,6 @@ import { StructurizrDslFormatter } from '../../formatters/StructurizrDslFormatte
 import { WorkspaceFactory } from '../../WorkspaceFactory';
 import { C4PlantUMLFormatter } from '../../formatters/C4PlantUMLFormatter';
 import { DrawIOFormatter } from '../../formatters/DrawIOFormatter';
-import stringify from 'safe-stable-stringify';
 
 export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNode> {
 
@@ -127,7 +126,6 @@ export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNo
         console.log(node);
         let workspacefactory = new WorkspaceFactory();
         let workspace = await workspacefactory.buildWorkspace(node.eeid);
-        console.log(stringify(workspace));
         const drawIO = new DrawIOFormatter().formatWorkspace(workspace);
         let fsclient = new FsConsumer();
         if (drawIO.context.length > 0)
