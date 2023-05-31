@@ -15,18 +15,15 @@ export class DrawIOFormatter {
             for (const view of workspace.views.systemContextViews) {
                 response.context = await this.writeSystemContextView(view);
             }
-            // workspace.views.systemContextViews.forEach(async v => {
-            //     response.context = await this.writeSystemContextView(v);
-            // });
-            // workspace.views.containerViews.forEach(v => {
-            //     response.container = this.writeContainerView(v);
-            // });
-            // workspace.views.componentViews.forEach(v => {
-            //     response.component = this.writeComponentView(v);
-            // });
-            // workspace.views.deploymentViews.forEach(v => {
-            //     response.deployment = this.writeDeploymentView(v);
-            // });
+            for (const view of workspace.views.containerViews) {
+                response.container = await this.writeContainerView(view);
+            }
+            for (const view of workspace.views.componentViews) {
+                response.component = await this.writeComponentView(view);
+            }
+            for (const view of workspace.views.deploymentViews) {
+                response.deployment = await this.writeDeploymentView(view);
+            }
         }
         
         return response;
@@ -49,17 +46,17 @@ export class DrawIOFormatter {
         return dwg;
     }
 
-    writeContainerView(v: ContainerView) {
+    async writeContainerView(v: ContainerView) : Promise<string> {
         console.log('*** DRAWIO System Container View Builder ***');
         return '';
     }
 
-    writeComponentView(v: ComponentView) {
+    async writeComponentView(v: ComponentView) : Promise<string> {
         console.log('*** DRAWIO Component View Builder ***');
         return '';
     }
 
-    writeDeploymentView(v: DeploymentView) {
+    async writeDeploymentView(v: DeploymentView) : Promise<string> {
         console.log('*** DRAWIO Deployment View Builder ***');
         return '';
     }
