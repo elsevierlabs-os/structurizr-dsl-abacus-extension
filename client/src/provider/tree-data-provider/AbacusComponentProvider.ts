@@ -126,7 +126,8 @@ export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNo
         console.log(node);
         let workspacefactory = new WorkspaceFactory();
         let workspace = await workspacefactory.buildWorkspace(node.eeid);
-        const drawIO = new DrawIOFormatter().formatWorkspace(workspace);
+        let drawIOformatter = new DrawIOFormatter();
+        let drawIO = await drawIOformatter.formatWorkspace(workspace);
         let fsclient = new FsConsumer();
         if (drawIO.context.length > 0)
         {

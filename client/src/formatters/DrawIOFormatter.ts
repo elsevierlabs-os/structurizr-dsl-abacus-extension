@@ -7,34 +7,32 @@ import { MxBuilder } from "mxbuilder";
 // This class takes a Structurizr workspace and converts it into a set of DrawIO files corresponding to the view defined in the workspace
 
 export class DrawIOFormatter {
-    public formatWorkspace(workspace: Workspace) : C4Views {
+
+    public async formatWorkspace(workspace: Workspace) : Promise<C4Views> {
         let response = new C4Views();
 
         if (workspace) {
-            response = this.parseWorkspace(workspace);
+            for (const view of workspace.views.systemContextViews) {
+                response.context = await this.writeSystemContextView(view);
+            }
+            // workspace.views.systemContextViews.forEach(async v => {
+            //     response.context = await this.writeSystemContextView(v);
+            // });
+            // workspace.views.containerViews.forEach(v => {
+            //     response.container = this.writeContainerView(v);
+            // });
+            // workspace.views.componentViews.forEach(v => {
+            //     response.component = this.writeComponentView(v);
+            // });
+            // workspace.views.deploymentViews.forEach(v => {
+            //     response.deployment = this.writeDeploymentView(v);
+            // });
         }
         
         return response;
     }
 
-    private parseWorkspace(workspace: Workspace) {
-        const results = new C4Views();
-        workspace.views.systemContextViews.forEach(v => {
-            results.context = this.writeSystemContextView(v);
-        });
-        workspace.views.containerViews.forEach(v => {
-            results.container = this.writeContainerView(v);
-        });
-        workspace.views.componentViews.forEach(v => {
-            results.component = this.writeComponentView(v);
-        });
-        workspace.views.deploymentViews.forEach(v => {
-            results.deployment = this.writeDeploymentView(v);
-        });
-        return results;
-    }
-
-     writeSystemContextView(v: SystemContextView) {
+    async writeSystemContextView(v: SystemContextView) : Promise<string> {
         console.log('*** DRAWIO System Context View Builder ***');
         var mx = new MxBuilder();
         this.writeElement(v.softwareSystem, mx);
@@ -45,8 +43,7 @@ export class DrawIOFormatter {
         .forEach(e => this.writeElement(e, mx));
 
         this.writeRelationships(v.relationships, mx);
-        // const dwg = await mx.toDiagram();
-        const dwg = 'ggg';
+        const dwg = await mx.toDiagram();
         console.log('*** Context View is: ');
         console.log(dwg);
         return dwg;
