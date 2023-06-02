@@ -57,9 +57,7 @@ export class DrawIOFormatter {
         } else {
             v.softwareSystem.model.relationships.forEach(r => {
                 console.log(`Relationship between <${r.source.type}> ${r.source.name} and <${r.destination.type}> ${r.destination.name}`);
-                // It is possible we are spoon fed all relationship hierarchies and just need to cherry pick the SS to SS ones?!
-                // var srcid = this.getParentOfType(r.source, SoftwareSystem.type);
-                // var dstid = this.getParentOfType(r.destination, SoftwareSystem.type);
+                // It is possible we are spoon fed all relationship hierarchies and just need to cherry pick the SS to SS ones
                 if (r.source.id !== r.destination.id && r.source.type === SoftwareSystem.type && r.destination.type === SoftwareSystem.type) {
                     this.writeRelationship(r, mx);
                 }
@@ -73,6 +71,46 @@ export class DrawIOFormatter {
     async writeContainerView(v: ContainerView) : Promise<string> {
         console.log('*** DRAWIO System Container View Builder ***');
         var mx = new MxBuilder();
+
+        // Here we need to get a list of elements to include if not the entire model (no entries == whole model)
+        let elementList : string[];
+        v.elements
+        .map(e => e.element)
+        .sort(this.by(e => e.name))
+        .forEach(e => elementList.push(e.id));
+
+        // Now we need to navigate the model and pull out all the SoftwareSystems as this is a container diagram
+        // Only the target SoftwareSystem will have containers elaborated
+        // If v.elements is not empty we need to compare notes. This can be greatly improved.
+        if (v.elements.length === 0){
+            v.softwareSystem.model.softwareSystems.sort(this.by(s => s.name)).forEach(s => {
+                if (s.id === v.softwareSystem.id)
+                {
+                    this.writeElementBoundary(s,mx);
+                    // We need to drop the containers here
+                    s.containers.sort(this.by(c => c.name)).forEach(c => {
+                        this.writeElement(c, mx);
+                    });
+                }
+                else
+                {
+                    this.writeElement(s,mx);
+                }
+            });
+        } else {
+            v.softwareSystem.model.softwareSystems.sort(this.by(s => s.name)).forEach(s=> {
+                if (elementList.includes(s.id)) {
+                    if (s.id === v.softwareSystem.id)
+                    {
+                        this.writeElementBoundary(s,mx);
+                    }
+                    else
+                    {
+                        this.writeElement(s,mx);
+                    }
+                }
+            });
+        }
 
         const dwg = await mx.toDiagram();
         return dwg;
@@ -95,7 +133,7 @@ export class DrawIOFormatter {
     }
 
     writeElement(e: Element, mx: MxBuilder): void {
-        switch(e.type){
+        switch (e.type){
             case Person.type:
                 mx.placePerson(e.name, e.description, e.id);
                 break;
@@ -103,10 +141,23 @@ export class DrawIOFormatter {
                 mx.placeSoftwareSystem(e.name, e.description, e.id);
                 break;
             case Container.type:
-                mx.placeContainer(e.name, 'Tech goes here', e.description, e.id);
+                mx.placeContainer(e.name, 'Tech goes here', e.description, e.id, e.parent.id);
                 break;
             case Component.type:
-                mx.placeComponent(e.name, 'Tech goes here', e.description, e.id);
+                mx.placeComponent(e.name, 'Tech goes here', e.description, e.id, e.parent.id);
+                break;
+            default:
+                break;
+        }
+    }
+
+    writeElementBoundary(e: Element, mx: MxBuilder): void {
+        switch (e.type){
+            case SoftwareSystem.type:
+                mx.placeSystemScopeBoundary(e.name, e.description, e.id);
+                break;
+            case Container.type:
+                mx.placeContainerScopeBoundary(e.name, e.description, e.id, e.parent.id);
                 break;
             default:
                 break;
