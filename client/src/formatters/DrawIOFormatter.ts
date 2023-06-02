@@ -32,33 +32,66 @@ export class DrawIOFormatter {
     async writeSystemContextView(v: SystemContextView) : Promise<string> {
         console.log('*** DRAWIO System Context View Builder ***');
         var mx = new MxBuilder();
-        this.writeElement(v.softwareSystem, mx);
 
+        // This is not needed as we build from the model and view parameters. 
+        //this.writeElement(v.softwareSystem, mx);
+
+        // Here we need to get a list of elements to include if not the entire model (no entries == whole model)
+        let elementList : string[];
         v.elements
         .map(e => e.element)
         .sort(this.by(e => e.name))
-        .forEach(e => this.writeElement(e, mx));
+        .forEach(e => elementList.push(e.id));
 
-        this.writeRelationships(v.relationships, mx);
+        // Now we need to navigate the model and pull out all the SoftwareSystems as this is a context diagram
+        // If v.elements is not empty we need to compare notes. This can be greatly improved.
+        if (v.elements.length === 0){
+            v.softwareSystem.model.softwareSystems.sort(this.by(s => s.name)).forEach(s => this.writeElement(s,mx));
+        } else {
+            v.softwareSystem.model.softwareSystems.sort(this.by(s => s.name)).forEach(s=> { if (elementList.includes(s.id)) {this.writeElement(s,mx);}});
+        }
+
+        // Here we need to get a list of relationships to include if not everything in the entire model (no entries == whole model)
+        if (v.relationships.length > 0) {
+            this.writeRelationships(v.relationships, mx);
+        } else {
+            v.softwareSystem.model.relationships.forEach(r => {
+                console.log(`Relationship between <${r.source.type}> ${r.source.name} and <${r.destination.type}> ${r.destination.name}`);
+                // It is possible we are spoon fed all relationship hierarchies and just need to cherry pick the SS to SS ones?!
+                // var srcid = this.getParentOfType(r.source, SoftwareSystem.type);
+                // var dstid = this.getParentOfType(r.destination, SoftwareSystem.type);
+                if (r.source.id !== r.destination.id && r.source.type === SoftwareSystem.type && r.destination.type === SoftwareSystem.type) {
+                    this.writeRelationship(r, mx);
+                }
+            });
+        }
+
         const dwg = await mx.toDiagram();
-        console.log('*** Context View is: ');
-        console.log(dwg);
         return dwg;
     }
 
     async writeContainerView(v: ContainerView) : Promise<string> {
         console.log('*** DRAWIO System Container View Builder ***');
-        return '';
+        var mx = new MxBuilder();
+
+        const dwg = await mx.toDiagram();
+        return dwg;
     }
 
     async writeComponentView(v: ComponentView) : Promise<string> {
         console.log('*** DRAWIO Component View Builder ***');
-        return '';
+        var mx = new MxBuilder();
+
+        const dwg = await mx.toDiagram();
+        return dwg;
     }
 
     async writeDeploymentView(v: DeploymentView) : Promise<string> {
         console.log('*** DRAWIO Deployment View Builder ***');
-        return '';
+        var mx = new MxBuilder();
+
+        const dwg = await mx.toDiagram();
+        return dwg;
     }
 
     writeElement(e: Element, mx: MxBuilder): void {
@@ -90,6 +123,25 @@ export class DrawIOFormatter {
         mx.placeRelationship(r.description, r.technology, r.source.id, r.destination.id);
     }
 
+    getParentOfType(entity: Element, type: string) {
+        switch (entity.type) {
+            case Person.type:
+                return entity.id;
+                break;
+            case SoftwareSystem.type:
+                return entity.id;
+                break;
+            case Container.type:
+                return entity.parent.id;
+                break;
+            case Component.type:
+                return entity.parent.parent.id;
+                break;
+        }
+
+        return '';
+    }
+
     private by<TItem, TProperty>(value: (i: TItem) => TProperty): (a: TItem, b: TItem) => number {
         return (a, b) => {
             var va = value(a);
@@ -98,3 +150,5 @@ export class DrawIOFormatter {
         };
     }
 }
+
+
