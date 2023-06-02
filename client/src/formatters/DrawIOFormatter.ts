@@ -103,10 +103,35 @@ export class DrawIOFormatter {
                     if (s.id === v.softwareSystem.id)
                     {
                         this.writeElementBoundary(s,mx);
+                        // We need to drop the containers here
+                        s.containers.sort(this.by(c => c.name)).forEach(c => {
+                            this.writeElement(c, mx);
+                        });
                     }
                     else
                     {
                         this.writeElement(s,mx);
+                    }
+                }
+            });
+        }
+
+        // Now we deal with the relationships
+        if (v.relationships.length > 0) {
+            this.writeRelationships(v.relationships, mx);
+        } else {
+            v.softwareSystem.model.relationships.forEach(r => {
+                console.log(`Relationship between <${r.source.type}> ${r.source.name} and <${r.destination.type}> ${r.destination.name}`);
+                // It is possible we are spoon fed all relationship hierarchies and just need to cherry pick the SS to SS ones (ext) or SS/Cont to Container (int)
+                if (r.source.id !== r.destination.id && r.source.id !== v.softwareSystem.id && r.destination.id !== v.softwareSystem.id) {
+                    if (r.source.type === SoftwareSystem.type && r.destination.type === SoftwareSystem.type) {
+                        this.writeRelationship(r, mx);
+                    } else if(r.source.type === SoftwareSystem.type && r.destination.type === Container.type && r.destination.parent.id === v.softwareSystem.id) {
+                        this.writeRelationship(r, mx);
+                    } else if (r.source.type === Container.type && r.source.parent.id === v.softwareSystem.id && r.destination.type === SoftwareSystem.type) {
+                        this.writeRelationship(r, mx);
+                    } else if (r.source.type === Container.type && r.source.parent.id === v.softwareSystem.id && r.destination.type === Container.type && r.destination.parent.id === v.softwareSystem.id) {
+                        this.writeRelationship(r, mx);
                     }
                 }
             });
