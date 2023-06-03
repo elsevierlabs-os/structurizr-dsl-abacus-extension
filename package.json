@@ -29,6 +29,18 @@
 	},
 	"main": "./client/out/extension.js",
 	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "drawio.editorUI",
+				"displayName": "Draw.IO Editor",
+				"selector": [
+					{
+						"filenamePattern": "*.drawio"
+					}
+				],
+				"priority": "default"
+			}
+		],
 		"commands": [
 			{
 				"command": "abacus.createDSL",

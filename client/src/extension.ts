@@ -10,6 +10,7 @@ import { AbacusComponentProvider, AbacusNode } from './provider/tree-data-provid
 import { StructurizrClient } from './StructurizrClient';
 import path = require('path');
 import { DrawioPanel } from './DrawioPanel';
+import { DrawioEditorProvider } from './drawioEditor';
 
 let client: LanguageClient;
 
@@ -111,6 +112,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			DrawioPanel.createOrShow(context);
 		})
 	);
+
+	context.subscriptions.push(DrawioEditorProvider.register(context));
 
 	showWelcomeMessage(context);
 

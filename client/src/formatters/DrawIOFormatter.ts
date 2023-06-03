@@ -33,9 +33,6 @@ export class DrawIOFormatter {
         console.log('*** DRAWIO System Context View Builder ***');
         var mx = new MxBuilder();
 
-        // This is not needed as we build from the model and view parameters. 
-        //this.writeElement(v.softwareSystem, mx);
-
         // Here we need to get a list of elements to include if not the entire model (no entries == whole model)
         let elementList : string[];
         v.elements
