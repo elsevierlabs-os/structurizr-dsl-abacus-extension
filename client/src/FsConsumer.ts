@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { posix } from 'path';
+import { DrawioEditorProvider } from './drawioEditor';
 
 
 export class FsConsumer {
@@ -17,7 +18,13 @@ export class FsConsumer {
 
         await vscode.workspace.fs.writeFile(fileUri, writeData);
 
-        vscode.window.showTextDocument(fileUri);
+        // vscode.window.showTextDocument(fileUri);
+        // vscode.commands.executeCommand(
+        //     'vscode.OpenWith',
+        //     fileUri,
+        //     'drawio.editorUI'
+        // );
+        await vscode.commands.executeCommand("vscode.open", fileUri);
     }
 
     public async createImageFile(filename: string, content: string) {

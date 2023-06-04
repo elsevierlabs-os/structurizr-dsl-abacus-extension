@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
  * This is a wrapper around the diagrams.net DrawIO editor so that we can edit
  * diagrams saved in the MXFile XML format with the extension .drawio
  * 
+ * See https://drawio.freshdesk.com/support/solutions/articles/16000042544-embed-mode for more detail
+ * 
  */
 
 export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
@@ -30,11 +32,12 @@ export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
         function updateWebview() {
             webviewPanel.webview.postMessage(JSON.stringify({
                 action: 'load',
+                autosave: true,
                 xml: document.getText(),
             }));
         }
 
-        // Hook up event handlers so that we can sync the webview with the text document.
+        // Hook up event handler so that we can sync the webview with the text document.
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
             if (e.document.uri.toString() === document.uri.toString()){
                 updateWebview();
@@ -43,6 +46,7 @@ export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
 
         // Make sure we get rid of the listener when the editor is closed
         webviewPanel.onDidDispose(() => {
+            console.log("DrawioEditor has been told it is going to be disposed. Or has it already?");
             changeDocumentSubscription.dispose();
         });
 
@@ -59,7 +63,7 @@ export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
             }
             switch (msg.event) {
                 case 'init':
-                    console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
+                    console.log(`DrawioEditor Event received of type: ${JSON.stringify(msg.event)}`);
                     // vscode.window.showErrorMessage(JSON.stringify(msg.event));
                     // We want to load the editor with the relevant Drawio XML payload
                     // var res = await this._panel.webview.postMessage(JSON.stringify({ action : 'load', xml: this.getSampleXml() }));
@@ -67,10 +71,13 @@ export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
                     return;
                     // See https://github.com/jgraph/drawio-integration/blob/master/inline.js on posting a message to draw.io. Need to adjust to match vscode webview expectations
                 case 'load':
-                    console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
+                    console.log(`DrawioEditor Event received of type: ${JSON.stringify(msg.event)}`);
+                    return;
+                case 'autosave':
+                    console.log(`DrawioEditor Event received of type: ${JSON.stringify(msg.event)}`);
                     return;
                 case 'save':
-                    console.log(`Event received of type: ${JSON.stringify(msg.event)}`);
+                    console.log(`DrawioEditor Event received of type: ${JSON.stringify(msg.event)}`);
                     return;
             }
         });
@@ -105,7 +112,7 @@ export class DrawioEditorProvider implements vscode.CustomTextEditorProvider {
 						}
 					});
 				</script>
-				<iframe src="https://embed.diagrams.net?embed=1&proto=json&noSaveBtn=1&noExitBtn=1"></iframe>
+				<iframe src="https://embed.diagrams.net?embed=1&proto=json&noSaveBtn=1&noExitBtn=1&saveAndExit=0"></iframe>
 			</body>
 		</html>
         `;
