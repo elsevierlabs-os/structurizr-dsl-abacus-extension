@@ -17,7 +17,7 @@ export class FsConsumer {
 
         await vscode.workspace.fs.writeFile(fileUri, writeData);
 
-        vscode.window.showTextDocument(fileUri);
+        await vscode.commands.executeCommand("vscode.open", fileUri);
     }
 
     public async createImageFile(filename: string, content: string) {
