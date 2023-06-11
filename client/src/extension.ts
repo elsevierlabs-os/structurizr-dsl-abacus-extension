@@ -9,8 +9,7 @@ import { StructurizrSoftwareSystemCompletionProvider } from './provider/completi
 import { AbacusComponentProvider, AbacusNode } from './provider/tree-data-provider/AbacusComponentProvider';
 import { StructurizrClient } from './StructurizrClient';
 import path = require('path');
-import { DrawioPanel } from './DrawioPanel';
-import { DrawioEditorProvider } from './drawioEditor';
+import { DrawioEditorProvider } from './DrawioEditor';
 
 let client: LanguageClient;
 
@@ -108,8 +107,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('drawio.sidePreview', async () => {
-			DrawioPanel.createOrShow(context);
+		vscode.commands.registerCommand('drawio.diagrams', async () => {
+			// Here we need to call the drawio compiler to generate the drawio files.
+			// Likely a version of the DrawIOFormatter
+			vscode.window.showWarningMessage('This capability is coming soon.');
 		})
 	);
 

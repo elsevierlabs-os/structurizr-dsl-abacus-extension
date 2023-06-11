@@ -52,7 +52,7 @@
 			},
 			{
 				"command": "abacus.createDrawIO",
-				"title": "Create DrawIO Diagrams",
+				"title": "Create C4 DrawIO Diagrams",
 				"icon": {
 					"light": "resources/light/drawio.svg",
 					"dark": "resources/dark/drawio.svg"
@@ -95,8 +95,8 @@
 				}
 			},
 			{
-				"command": "drawio.sidePreview",
-				"title": "Preview in Draw.io",
+				"command": "drawio.diagrams",
+				"title": "Generate C4 Diagrams in Draw.io",
 				"icon": {
 					"light": "resources/light/drawio.svg",
 					"dark": "resources/dark/drawio.svg"
@@ -125,7 +125,7 @@
 			"editor/title": [
 				{
 					"when": "editorLangId == structurizr",
-					"command": "drawio.sidePreview",
+					"command": "drawio.diagrams",
 					"group": "navigation@1"
 				},
 				{
