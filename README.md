@@ -4,8 +4,10 @@ An extension that provides these key features:
 
 * Syntax highlighting support for [Structurizr DSL](https://github.com/structurizr/dsl)
 * Allow content in Avolution Abacus to be used to create Structurizr files
+* Allow content in Avolution Abacus to be used to generate Draw.io C4 diagrams directly
 * Auto complete relevant data sections when writing up Structurizr C4 Model DSL files.
 * Integration with Structurizr Lite to generate image files from DSL files.
+* Integration with Draw.io to generate C4 diagrams from DSL files (coming soon)
 
 ## Features
 
@@ -21,9 +23,11 @@ Any DSL model can be exported as a workspace file for a locally installed [Struc
 
 Where desired, C4 and normal PlantUML diagrams can be exports from Structurizr model built when creating models from Abacus browser.
 
+With the addition of embedded Draw.io support C4 diagrams can be generated directly from Abacus or via Structrurizr DSL files.
+
 ## Extension System Context Diagram
 
-![System Context](https://raw.githubusercontent.com/elsevierlabs-os/structurizr-dsl-abacus-extension/main/media/structurizr-71878-SystemContext.png)
+![System Context](https://raw.githubusercontent.com/elsevierlabs-os/structurizr-dsl-abacus-extension/main/media/Structurizr-DSL-Abacus.png)
 
 ## Requirements
 
@@ -54,6 +58,12 @@ This is a pre-release version and thus will have any number of issues or defects
 ## Release Notes
 
 Here is a short summary of the key changes or updates of this release.
+
+### 0.6.0
+
+First release under the Elsevier Open Source banner.
+
+Introduction of embedded Draw.io capability.
 
 ### 0.5.1
 

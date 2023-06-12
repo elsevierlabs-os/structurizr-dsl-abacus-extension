@@ -1,8 +1,11 @@
 {
-	"name": "structurizr-dsl-abacus-extension-server",
-	"description": "Structurizr language server.",
-	"version": "0.5.1",
-	"author": "GFR Software",
+	"name": "abacus-structurizr-dsl-extension-server",
+	"description": "Abacus Structurizr language server.",
+	"version": "0.6.0",
+	"author": {
+		"name": "Gerry Rohling",
+		"email": "g.rohling@elsevier.com"
+	},
 	"license": "MIT",
 	"engines": {
 		"node": "*"

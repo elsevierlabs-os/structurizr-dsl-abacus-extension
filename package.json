@@ -1,9 +1,13 @@
 {
-	"name": "structurizr-dsl-abacus-extension",
-	"displayName": "Structurizr DSL Abacus Extension",
+	"name": "abacus-structurizr-dsl-extension",
+	"displayName": "Abacus Structurizr DSL Extension",
 	"description": "Extends DSL support to the auto creation of Structurizr files as well as syntax highlighting and code completion using content in an Abacus Enterprise Architecture Repository. Can generate image files from locally installed Structurizr Lite server.",
 	"publisher": "Elsevier",
-	"version": "0.5.1",
+	"author": {
+		"name": "Gerry Rohling",
+		"email": "g.rohling@elsevier.com"
+	},
+	"version": "0.6.0",
 	"icon": "resources/logo.png",
 	"engines": {
 		"vscode": "^1.63.0"
@@ -29,6 +33,18 @@
 	},
 	"main": "./client/out/extension.js",
 	"contributes": {
+		"customEditors": [
+			{
+				"viewType": "drawio.editorUI",
+				"displayName": "Draw.IO Editor",
+				"selector": [
+					{
+						"filenamePattern": "*.drawio"
+					}
+				],
+				"priority": "default"
+			}
+		],
 		"commands": [
 			{
 				"command": "abacus.createDSL",
@@ -36,6 +52,14 @@
 				"icon": {
 					"light": "resources/light/dsl.svg",
 					"dark": "resources/dark/dsl.svg"
+				}
+			},
+			{
+				"command": "abacus.createDrawIO",
+				"title": "Create C4 DrawIO Diagrams",
+				"icon": {
+					"light": "resources/light/drawio.svg",
+					"dark": "resources/dark/drawio.svg"
 				}
 			},
 			{
@@ -73,12 +97,24 @@
 					"light": "resources/light/file-media.svg",
 					"dark": "resources/dark/file-media.svg"
 				}
+			},
+			{
+				"command": "drawio.diagrams",
+				"title": "Generate C4 Diagrams in Draw.io",
+				"icon": {
+					"light": "resources/light/drawio.svg",
+					"dark": "resources/dark/drawio.svg"
+				}
 			}
 		],
 		"menus": {
 			"view/item/context": [
 				{
 					"command": "abacus.createDSL",
+					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
+				},
+				{
+					"command": "abacus.createDrawIO",
 					"when": "view == abacusComponents && viewItem == c4SoftwareSystem"
 				},
 				{
@@ -93,13 +129,18 @@
 			"editor/title": [
 				{
 					"when": "editorLangId == structurizr",
+					"command": "drawio.diagrams",
+					"group": "navigation@1"
+				},
+				{
+					"when": "editorLangId == structurizr",
 					"command": "structurizr.publish",
-					"group": "navigation"
+					"group": "navigation@2"
 				},
 				{
 					"when": "editorLangId == structurizr",
 					"command": "structurizr.diagrams",
-					"group": "navigation"
+					"group": "navigation@3"
 				}
 			]
 		},
@@ -241,5 +282,8 @@
 		"glob": "^7.1.7",
 		"mocha": "^9.1.3",
 		"typescript": "^4.4.4"
+	},
+	"dependencies": {
+		"replace-ext": "^2.0.0"
 	}
 }

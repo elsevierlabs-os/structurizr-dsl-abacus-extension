@@ -74,5 +74,4 @@ export class StructurizrClient {
             vscode.window.showErrorMessage("Unable to connect to Structurizr Lite server. Please check config and ensure it is running.");
         }
     }
-
 }

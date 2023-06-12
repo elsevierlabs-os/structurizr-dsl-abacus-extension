@@ -2,10 +2,11 @@ import path = require('path');
 import { PlantUMLWriter } from 'structurizr-typescript';
 import * as vscode from 'vscode';
 import { AbacusClient } from '../../AbacusClient';
-import { FsConsumer } from '../../fsConsumer';
+import { FsConsumer } from '../../FsConsumer';
 import { StructurizrDslFormatter } from '../../formatters/StructurizrDslFormatter';
 import { WorkspaceFactory } from '../../WorkspaceFactory';
 import { C4PlantUMLFormatter } from '../../formatters/C4PlantUMLFormatter';
+import { DrawIOFormatter } from '../../formatters/DrawIOFormatter';
 
 export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNode> {
 
@@ -119,6 +120,32 @@ export class AbacusComponentProvider implements vscode.TreeDataProvider<AbacusNo
             await fsclient.createFile(node.label + "-Deployment.puml", c4plantUML.deployment);
         }
     }
+
+    async createDrawIO(node: AbacusNode) {
+        console.log(`createDrawIO called with the following node:`);
+        console.log(node);
+        let workspacefactory = new WorkspaceFactory();
+        let workspace = await workspacefactory.buildWorkspace(node.eeid);
+        let drawIOformatter = new DrawIOFormatter();
+        let drawIO = await drawIOformatter.formatWorkspace(workspace);
+        let fsclient = new FsConsumer();
+        if (drawIO.context.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Context.drawio", drawIO.context);
+        }
+        if (drawIO.container.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Container.drawio", drawIO.container);
+        }
+        if (drawIO.component.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Component.drawio", drawIO.component);
+        }
+        if (drawIO.deployment.length > 0)
+        {
+            await fsclient.createFile(node.label + "-Deployment.drawio", drawIO.deployment);
+        }
+    }
 }
 
 export class AbacusNode extends vscode.TreeItem {
@@ -137,20 +164,20 @@ export class AbacusNode extends vscode.TreeItem {
         switch(c4level){
             case 'c4SoftwareSystem':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'softwaresystem.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'softwaresystem.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'softwaresystem.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'softwaresystem.svg')
                 };
                 break;
             case 'c4Container':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'container.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'container.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'container.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'container.svg')
                 };
                 break;
             case 'c4Component':
                 this.iconPath = {
-                    light: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'light', 'component.svg'),
-                    dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'c4', 'dark', 'component.svg')
+                    light: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'light', 'component.svg'),
+                    dark: path.join(__filename, '..', '..', '..', '..', '..', 'resources', 'c4', 'dark', 'component.svg')
                 };
                 break;
         }

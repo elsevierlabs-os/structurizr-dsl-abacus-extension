@@ -1,33 +1,6 @@
 import { Component, ComponentView, Container, ContainerView, DeploymentView, Element, Person, Relationship, RelationshipView, SoftwareSystem, StaticStructureElement, StaticView, SystemContextView, View, Workspace } from "structurizr-typescript";
-
-class StringWriter {
-    private value = "";
-
-    public write(content: string): void {
-        this.value += content;
-    }
-
-    public writeLine(content: string): void {
-        this.write(content);
-        this.newline();
-    }
-
-    public newline(): void {
-        this.write("\r\n");
-    }
-
-    public toString(): string {
-        return this.value;
-    }
-}
-
-export class C4Views {
-    public context:string = "";
-    public container:string = "";
-    public component:string = "";
-    public deployment:string = "";
-
-}
+import { C4Views } from "./C4Views";
+import { StringWriter } from "./StringWriter";
 
 // This class was to extend the structurizr-typescript class plantUMLWriter but first pass 
 // I am writing it in parallel for clarity.
