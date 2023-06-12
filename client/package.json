@@ -1,6 +1,6 @@
 {
-	"name": "structurizr-dsl-abacus-extension-client",
-	"description": "VSCode part of the structurizr abacus extension",
+	"name": "abacus-structurizr-dsl-extension-client",
+	"description": "VSCode part of the Abacus Structurizr extension",
 	"author": {
 		"name": "Gerry Rohling",
 		"email": "g.rohling@elsevier.com"

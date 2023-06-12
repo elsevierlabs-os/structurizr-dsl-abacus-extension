@@ -1,6 +1,6 @@
 {
-	"name": "structurizr-dsl-abacus-extension",
-	"displayName": "Structurizr DSL Abacus Extension",
+	"name": "abacus-structurizr-dsl-extension",
+	"displayName": "Abacus Structurizr DSL Extension",
 	"description": "Extends DSL support to the auto creation of Structurizr files as well as syntax highlighting and code completion using content in an Abacus Enterprise Architecture Repository. Can generate image files from locally installed Structurizr Lite server.",
 	"publisher": "Elsevier",
 	"author": {
