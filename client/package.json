@@ -1,9 +1,12 @@
 {
 	"name": "structurizr-dsl-abacus-extension-client",
 	"description": "VSCode part of the structurizr abacus extension",
-	"author": "GFR Software",
+	"author": {
+		"name": "Gerry Rohling",
+		"email": "g.rohling@elsevier.com"
+	},
 	"license": "MIT",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"publisher": "gfrsoftware",
 	"repository": {
 		"type": "git",
