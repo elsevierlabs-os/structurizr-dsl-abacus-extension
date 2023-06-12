@@ -1,6 +1,7 @@
 .vscode/**
 .vscode-test/**
-src/**
+client/src/**
+server/src/**
 .gitignore
 .yarnrc
 **/tsconfig.json

@@ -27,7 +27,7 @@ With the addition of embedded Draw.io support C4 diagrams can be generated direc
 
 ## Extension System Context Diagram
 
-![System Context](https://raw.githubusercontent.com/elsevierlabs-os/structurizr-dsl-abacus-extension/main/media/structurizr-71878-SystemContext.png)
+![System Context](https://raw.githubusercontent.com/elsevierlabs-os/structurizr-dsl-abacus-extension/main/media/Structurizr-DSL-Abacus.png)
 
 ## Requirements
 
@@ -60,6 +60,8 @@ This is a pre-release version and thus will have any number of issues or defects
 Here is a short summary of the key changes or updates of this release.
 
 ### 0.6.0
+
+First release under the Elsevier Open Source banner.
 
 Introduction of embedded Draw.io capability.
 
