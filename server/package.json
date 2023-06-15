@@ -1,7 +1,7 @@
 {
 	"name": "abacus-structurizr-dsl-extension-server",
 	"description": "Abacus Structurizr language server.",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"author": {
 		"name": "Gerry Rohling",
 		"email": "g.rohling@elsevier.com"
