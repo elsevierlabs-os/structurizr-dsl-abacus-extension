@@ -131,20 +131,20 @@ export function deactivate() {
 }
 
 function showWelcomeMessage(context: vscode.ExtensionContext) {
-	let previousVersion = context.globalState.get<string>('structurizr-dsl-abacus-extension-version');
-	let currentVersion = vscode.extensions.getExtension('Elsevier.structurizr-dsl-abacus-extension')?.packageJSON?.version;
+	let previousVersion = context.globalState.get<string>('abacus-structurizr-dsl-extension');
+	let currentVersion = vscode.extensions.getExtension('Elsevier.abacus-structurizr-dsl-extension')?.packageJSON?.version;
 	let message : string | null = null;
 	let previousVersionArray = previousVersion ? previousVersion.split('.').map((s: string) => Number(s)) : [0, 0, 0];
 	let currentVersionArray = currentVersion.split('.').map((s: string) => Number(s));
 	if (previousVersion === undefined || previousVersion.length === 0) {
-		message = "Thanks for using Structurizr DSL Abacus Extension.";
+		message = "Thanks for using Abacus Structurizr DSL Extension.";
 	} else if (currentVersion !== previousVersion && (
 		// (previousVersionArray[0] === currentVersionArray[0] && previousVersionArray[1] === currentVersionArray[1] && previousVersionArray[2] < currentVersionArray[2]) ||
 		(previousVersionArray[0] === currentVersionArray[0] && previousVersionArray[1] < currentVersionArray[1]) ||
 		(previousVersionArray[0] < currentVersionArray[0])
 	)
 	) {
-		message = "Structurizr DSL Abacus Extension updated to " + currentVersion;
+		message = "Abacus Structurizr DSL Extension updated to " + currentVersion;
 	}
 	if (message) {
 		vscode.window.showInformationMessage(message, '⭐️ Rate', '⭐️ Star on Github', '🪲 Report Bug')
@@ -157,7 +157,7 @@ function showWelcomeMessage(context: vscode.ExtensionContext) {
 					vscode.env.openExternal(vscode.Uri.parse('https://github.com/elsevierlabs-os/structurizr-dsl-abacus-extension'));
 				}
 			});
-		context.globalState.update('structurizr-dsl-abacus-extension-version', currentVersion);
+		context.globalState.update('abacus-structurizr-dsl-extension', currentVersion);
 	}
 }
 

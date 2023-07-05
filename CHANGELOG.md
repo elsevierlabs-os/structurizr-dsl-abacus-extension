@@ -5,6 +5,10 @@ All notable changes to the "structurizr-dsl-abacus-extension" extension will be 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2]
+
+- Fixed broken welcome message dialog.
+
 ## [0.6.1]
 
 - Dependency updates and updated change log
