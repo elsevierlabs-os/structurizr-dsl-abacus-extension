@@ -7,7 +7,7 @@
 		"name": "Gerry Rohling",
 		"email": "g.rohling@elsevier.com"
 	},
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"icon": "resources/logo.png",
 	"engines": {
 		"vscode": "^1.63.0"

@@ -59,6 +59,10 @@ This is a pre-release version and thus will have any number of issues or defects
 
 Here is a short summary of the key changes or updates of this release.
 
+### 0.6.2
+
+Fixed broken welcome message dialog.
+
 ### 0.6.1
 
 Dependency updates and corrected change log.
